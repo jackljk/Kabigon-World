@@ -11,21 +11,13 @@ See the GNU General Public License for more details. A copy of this license can 
 for music-transformer, or at https://www.gnu.org/licenses/gpl-3.0.html.
 """
 
-from torch import torch, device as d
 from vocabulary import vocab_size
 import os
+import torch
 
-# GPU index to use
-gpu_index = 2
-os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu_index)
+device = torch.device('cuda:2')
 
 
-# get device
-if torch.backends.cuda.is_built():
-    dev = "cuda:0"
-else:
-    dev = "cpu"
-device = d(dev)
 
 # default hparams for the model
 hparams = {

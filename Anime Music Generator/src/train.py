@@ -22,6 +22,7 @@ from hparams import device
 from masking import create_mask
 from model import MusicTransformer
 
+
 """
 Functionality to train a Music Transformer on a single CPU or single GPU
 
@@ -330,7 +331,7 @@ class MusicTransformerTrainer:
 
 if __name__ == "__main__":
     from hparams import hparams
-
+    
     def check_positive(x):
         if x is None:
             return x
