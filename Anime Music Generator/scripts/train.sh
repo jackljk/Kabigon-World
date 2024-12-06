@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the base directory for your project
-export BASEPATH="/home/jklim/jack/personal/Kabigon-World/Anime Music Generator/src"
+export BASEPATH="/home/jklim/jack/ClimateBench/test/Kabigon-World/Anime Music Generator/src"
 
 # Export the name of the current script
 export SCRIPT_NAME=$(basename "$0")
