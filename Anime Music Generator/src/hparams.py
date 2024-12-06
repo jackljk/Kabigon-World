@@ -13,6 +13,12 @@ for music-transformer, or at https://www.gnu.org/licenses/gpl-3.0.html.
 
 from torch import torch, device as d
 from vocabulary import vocab_size
+import os
+
+# GPU index to use
+gpu_index = 2
+os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu_index)
+
 
 # get device
 if torch.backends.cuda.is_built():
