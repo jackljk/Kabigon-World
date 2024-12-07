@@ -15,26 +15,32 @@ from vocabulary import vocab_size
 import os
 import torch
 
-device = torch.device('cuda:2')
+
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+else:
+    device = torch.device("cpu")
+    
+print(f"Using device: {device}")
 
 
 
 # default hparams for the model
-hparams = {
-    "d_model": 128,
-    "num_layers": 3,
-    "num_heads": 8,
-    "d_ff": 512,
-    "max_rel_dist": 1024,
-    "max_abs_position": 0,
-    "vocab_size": vocab_size,
-    "bias": True,
-    "dropout": 0.1,
-    "layernorm_eps": 1e-6
-}
+# hparams = {
+#     "d_model": 128,
+#     "num_layers": 3,
+#     "num_heads": 8,
+#     "d_ff": 512,
+#     "max_rel_dist": 1024,
+#     "max_abs_position": 0,
+#     "vocab_size": vocab_size,
+#     "bias": True,
+#     "dropout": 0.1,
+#     "layernorm_eps": 1e-6
+# }
 
 # hparams for TF model - significantly larger
-hparams_large = {
+hparams = {
     "d_model": 256,
     "num_layers": 6,
     "num_heads": 8,

@@ -21,6 +21,9 @@ from torch.utils.data import DataLoader, TensorDataset
 from hparams import device
 from masking import create_mask
 from model import MusicTransformer
+import torch._dynamo
+torch._dynamo.config.suppress_errors = True
+
 
 
 """
@@ -163,6 +166,7 @@ class MusicTransformerTrainer:
         # get the data
         self.datapath = datapath
         self.batch_size = batch_size
+        print(datapath)
         data = torch.load(datapath).long().to(device)
 
         # max absolute position must be able to acount for the largest sequence in the data
