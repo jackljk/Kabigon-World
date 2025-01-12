@@ -1,4 +1,5 @@
 import streamlit as st
+from src.utils.sidebar import update_mal_id, update_mal_username, _clear_mal_data
 
 path = 'src/pages/'
 
@@ -18,23 +19,14 @@ pages = {
 pg = st.navigation(pages)
 
 
-def update_mal_id():
-    st.session_state['mal_id'] = st.session_state.mal_id_input
 
-def update_mal_username():
-    st.session_state['mal_username'] = st.session_state.mal_username_input
 
-# Initialize session state variables if they don't exist
-if 'mal_id' not in st.session_state:
-    st.session_state['mal_id'] = ''
-if 'mal_username' not in st.session_state:
-    st.session_state['mal_username'] = ''
 
 # Sidebar data input
 st.sidebar.title("Data Input")
-mal_id = st.sidebar.text_input("Enter MAL ID", value=st.session_state['mal_id'], placeholder="MAL ID", key='mal_id_input', on_change=update_mal_id)
-mal_username = st.sidebar.text_input("Enter MAL Username", value=st.session_state['mal_username'], placeholder="MAL Username", key='mal_username_input', on_change=update_mal_username)
-
+mal_id = st.sidebar.text_input("Enter MAL ID", st.query_params.get('mal_id'), placeholder="MAL ID", key='mal_id', on_change=update_mal_id)
+mal_username = st.sidebar.text_input("Enter MAL Username", st.query_params.get('mal_username'), placeholder="MAL Username", key='mal_username', on_change=update_mal_username)
+clear_mal_data = st.sidebar.button("Clear User Data", on_click=_clear_mal_data)
 
 
 # Run the app
