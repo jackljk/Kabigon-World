@@ -14,7 +14,7 @@ pages = {
      "Resources": [
           st.Page(f"{path}settings.py", title="Settings", icon="⚙️"),
      ],
-     " " : [st.Page(f"{path}test.py", title="test")],
+     " " : [st.Page(f"{path}test.py", title="test", hidden=True)],
 }
 
 # Sidebar navigation
