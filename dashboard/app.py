@@ -1,5 +1,6 @@
 import streamlit as st
 from src.utils.sidebar import update_mal_id, update_mal_username, _clear_mal_data
+from src.utils.state_variables import initialize_state_variables
 
 path = 'src/pages/'
 
@@ -12,11 +13,15 @@ pages = {
      ],
      "Resources": [
           st.Page(f"{path}settings.py", title="Settings", icon="⚙️"),
-     ]
+     ],
+     " " : [st.Page(f"{path}test.py", title="test")],
 }
 
 # Sidebar navigation
 pg = st.navigation(pages)
+
+# initialize state variables
+initialize_state_variables()
 
 
 
