@@ -27,10 +27,29 @@ def get_full_anime_info(anime_id):
     anime = jikan.anime(anime_id)['data']
     return anime
 
-def get_anime_genre_data(anime):
+def get_anime_data(anime):
+    d = {}
+    
+    # genres
     genre_data = anime['genres']
     genre_names = [x['name'] for x in genre_data]
-    return genre_names
+    d['genres'] = genre_names
+    
+    # themes
+    theme_data = anime['themes']
+    theme_names = [x['name'] for x in theme_data if x['name'] is not None]
+    d['themes'] = theme_names
+    
+    # aired dates (release date and end date)
+    aired_data = anime['aired']
+    aired_dict = {}
+    aired_dict['aired'] = aired_data['from'] # iso format (from datetime import datetime)
+    aired_dict['release_year'] = aired_data['from']['prop']['from']['year']
+    aired_dict['end'] = aired_data['to'] if aired_data['to'] else "Movie"
+    d['release_date'] = aired_dict
+    
+    
+    return d
 
 # @st.cache_data
 # def load_data():

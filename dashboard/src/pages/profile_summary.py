@@ -1,14 +1,21 @@
 import streamlit as st
 import time
 import random
-from src.utils.data import get_user_animelist, get_anime_genre_data, get_full_anime_info
-from src.utils.dashboard_visualizations import update_genre_bar_chart
+from src.utils.data import get_user_animelist, get_anime_catergorical_data, get_full_anime_info
+from src.utils.dashboard_visualizations import genre_wordcloud, genre_bar_chart
+from src.utils.state_variables import DataStateHandler
 import pandas as pd
+
+# init State Handler
+state_handler = DataStateHandler()
+
 
 st.title("Profile Summary")
 placeholder = st.empty()
 loader_placeholder = st.empty()
-chart_container = st.empty()
+barchart_genre_container = st.empty()
+wordcloud_genre_container = st.empty()
+
 
 # Fetch and display data if a username is entered
 if "mal_username" in st.session_state and st.session_state["mal_username"]:
@@ -39,16 +46,25 @@ else:
 # Update visualizations    
 @st.fragment(run_every=run_every)
 def update_visualizations():    
-    # get new data
-    anime = get_full_anime_info(st.session_state.anime_data.iloc[st.session_state.jikan_counter]['id'])
-    genre_data = get_anime_genre_data(anime)
+    # Handler to stop when all the data is loaded
+    if st.session_state.jikan_counter > 5 or st.session_state.animelist_length < st.session_state.jikan_counter: # number variables to be changed
+        st.stop()
     
-    with chart_container.container():
-        update_genre_bar_chart(genre_data)
-        st.bar_chart(st.session_state.dashboard_genre_bar_chart.set_index('genre'))
+    # get new data and update state variables
+    state_handler.update_anime(st.session_state.anime_data.iloc[st.session_state.jikan_counter]['id'])
+    
+    with barchart_genre_container.container():
+        st.bar_chart(genre_bar_chart())
         
+    with wordcloud_genre_container.container():
+        st.pyplot(genre_wordcloud())
         
     st.session_state.jikan_counter += 1
+    
+    
+reset_button = st.button("Reset", on_click=lambda: st.session_state.pop("jikan_counter", 0))    
+    
+    
 
 st.write(f"Run every {run_every} seconds")
 update_visualizations()

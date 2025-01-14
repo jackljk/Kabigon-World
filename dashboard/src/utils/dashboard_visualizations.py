@@ -1,17 +1,34 @@
 import pandas as pd
 import streamlit as st
+import wordcloud
+import matplotlib.pyplot as plt
 
 
+def genre_bar_chart():
+    """
+    No special barcharts edits for now so returning df
+    """
+    return st.session_state.dashboard_genre_data.set_index("genre")
 
-def update_genre_bar_chart(data):
-    # given a list of genres update the count of each genre in the bar chart
-    curr_df = st.session_state.dashboard_genre_bar_chart
+
+def genre_wordcloud():
+    df = st.session_state.dashboard_genre_data
+
+    # create text which is all the genres repeated by their count
+    text = ""
     
-    for genre in data:
-        if genre in curr_df['genre'].values:
-            curr_df.loc[curr_df['genre'] == genre, 'count'] += 1
-        else:
-            new_row = {'genre': genre, 'count': 1}
-            curr_df = pd.concat([curr_df, pd.DataFrame([new_row])], ignore_index=True)
-    
-    st.session_state.dashboard_genre_bar_chart = curr_df
+    # Get the current theme's background color
+    background_color = st.get_option("theme.backgroundColor")
+    print(background_color)
+
+    for index, row in df.iterrows():
+        text += (row["genre"] + " ") * row["count"]
+    wc = wordcloud.WordCloud(
+        width=800, height=400, max_words=500, background_color=background_color, collocations=False, regexp=r'\S+'
+    ).generate(text)
+
+    fig, ax = plt.subplots()
+    ax.imshow(wc, interpolation="bilinear")
+    ax.axis("off")
+
+    return fig
