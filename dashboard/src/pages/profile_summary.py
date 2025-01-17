@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 import random
-from src.utils.data import get_user_animelist, get_anime_catergorical_data, get_full_anime_info
+from src.utils.data import get_user_animelist, get_anime_data, get_full_anime_info
 from src.utils.dashboard_visualizations import genre_wordcloud, genre_bar_chart
 from src.utils.state_variables import DataStateHandler
 import pandas as pd

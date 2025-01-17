@@ -9,6 +9,7 @@ pages = {
      "": [st.Page(f"{path}home.py", title="Home", icon="🏠")],
      "Tools": [
           st.Page(f"{path}profile_summary.py", title="Profile Summary", icon="📊"),
+          st.Page(f"{path}anime_analytics.py", title="Anime Analytics", icon="🎭"),
           st.Page(f"{path}recommender.py", title="Recommender", icon="🔍"),
      ],
      "Resources": [

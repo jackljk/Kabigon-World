@@ -1,3 +1,7 @@
 secrets.toml
 
 */.env
+
+# ignore all cache files such as .DS_Store __pycache__ etc.
+**/.DS_Store
+**/__pycache__
