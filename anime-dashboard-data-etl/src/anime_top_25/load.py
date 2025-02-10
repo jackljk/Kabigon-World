@@ -5,7 +5,8 @@ from decimal import Decimal
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+
+load_dotenv("../.env")
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_KEY")
@@ -20,6 +21,32 @@ dynamodb = boto3.resource(
 facts_table = dynamodb.Table("anime_top_25_facts")
 anime_dimension = dynamodb.Table("anime_dimension")
 top_25_rank = dynamodb.Table("top_25_rank_history")
+
+def load_data(**kwargs):
+    snapshot = kwargs['ti'].xcom_pull(task_ids='transform_top_data')
+    snapshot_timestamp = get_timestamp() # timestamp of the snapshot
+    
+    for item in snapshot:
+        mal_id = item.get('mal_id') # mal_id of the anime
+        
+        print(f"Handling facts table for mal_id: {mal_id}")
+        # handle facts table
+        update_fact_table(mal_id, snapshot_timestamp, item.get('statistics'))
+        
+        print(f"Handling anime dimension table for mal_id: {mal_id}")
+        # handle anime dimension table
+        update_anime_dimension_item(mal_id, item)
+            
+        print(f"Handling top 25 rank table for mal_id: {mal_id}")
+        # handle top 25 rank table (SCD)
+        item_rank = item.get('statistics', {}).get('rank')
+        if item_rank is not None:    
+            update_top_25_rank(mal_id, item_rank, snapshot_timestamp)
+        else:
+            raise ValueError(f"Rank is missing for mal_id: {mal_id}")
+        
+    
+    
 
 
 def get_timestamp():
